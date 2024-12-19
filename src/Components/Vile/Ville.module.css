@@ -1,0 +1,86 @@
+.form {
+    display: flex;
+    justify-content: space-around;
+}
+.form {
+    margin-bottom: 2rem;
+  }
+  
+  /* Checkbox container styling */
+  .checkboxGroup {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0.5rem 0;
+    padding: 0.25rem 0;
+  }
+  
+  /* Custom checkbox styling */
+  .checkboxInput {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #dee2e6;
+    border-radius: 4px;
+    background-color: white;
+    cursor: pointer;
+    position: relative;
+    margin: 0;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .checkboxInput:checked {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+  }
+  
+  /* Checkmark symbol */
+  .checkboxInput:checked::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  
+  /* Checkbox label styling */
+  .checkboxLabel {
+    font-size: 0.9rem;
+    color: #dedede;
+    cursor: pointer;
+    user-select: none;
+    margin: 0;
+    padding-left: 0.25rem;
+  }
+  
+  /* Hover and focus states */
+  .checkboxInput:hover {
+    border-color: #0d6efd;
+  }
+  
+  .checkboxInput:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.25);
+  }
+  
+  /* Row styling */
+  .formRow {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid #dee2e6;
+  }
+  Button{
+    width: 50%;
+  }
+  .wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }

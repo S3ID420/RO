@@ -1,0 +1,64 @@
+from gurobipy import Model, GRB, quicksum
+
+# Input Data
+M = ["p", "c","d"]  # Subjects
+P = [1, 1,2]  # Priorities
+C = [3, 3,3]  # Complexities
+TD = 15  # Total available time
+TM = 1  # Minimum time per subject
+
+def solve_optimization(M, P, C, TM, TD):
+    try:
+        n = len(M)
+        w = [C[i] * P[i] for i in range(n)]
+        a = TD / sum(w)
+
+        # Create the Gurobi model
+        model = Model("Optimisation de la révision")
+
+        # Decision variables
+        t = [model.addVar(lb=TM, ub=TD, vtype=GRB.CONTINUOUS, name=f"T_{i + 1}") for i in range(n)]
+
+        # Objective function
+        model.setObjective(quicksum(w[i] * t[i] for i in range(n)), GRB.MAXIMIZE)
+
+        # Constraints
+        model.addConstr(quicksum(t) <= TD, "Temps_Disponible")
+        for i in range(n):
+            model.addConstr(t[i] >= TM, f"ContrainteTemps_{i + 1}")
+
+        # Optimize
+        for i in range(n):
+            for j in range(i + 1, n):
+                if P[i] == P[j] and C[i] == C[j]:
+                    model.addConstr(t[i] == t[j], f"EqualTime_{i}_{j}")
+        model.optimize()
+
+        # Check for optimal solution
+        if model.status == GRB.OPTIMAL:
+            solution = []
+            for i in range(n):
+                time_in_hours = t[i].x
+                full_hours = int(time_in_hours)
+                minutes = int(round((time_in_hours - full_hours) * 60))  # Fix for minutes calculation
+                solution.append({
+                    "subject": M[i],
+                    "time": f"{full_hours} hours and {minutes} minutes"
+                })
+
+            return {
+                "status": "optimal",
+                "total_score": round(model.objVal, 2),
+                "schedule": solution
+            }
+        else:
+            return {"status": "no_solution", "message": "No optimal solution found."}
+
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+# Run the function with the given data
+result = solve_optimization(M, P, C, TM, TD)
+
+# Print the result
+print(result)
